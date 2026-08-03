@@ -1,0 +1,160 @@
+/* Styling the main navbar layout... */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-height, 70px);
+  z-index: 1000;
+  background: #07111F; /* Solid background so text doesn't overlap */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: 0.3s ease;
+  box-sizing: border-box;
+}
+
+.navbar--scrolled {
+  background: rgba(7, 17, 31, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  height: 100%;
+  margin: 0 auto; /* Auto center the container */
+  padding: 0 60px; /* Safe padding for desktop */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Crucial: pushes logo left, menu right */
+  width: 100%;
+  box-sizing: border-box; /* Prevents overflow from padding */
+}
+
+/* Styling the brand logo and links... */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  z-index: 1200; /* Keeps logo above mobile menu */
+}
+
+.brand-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-brand span {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-text, #ffffff);
+  letter-spacing: 0.05em;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-link, .nav-link-btn {
+  background: none;
+  border: none;
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-muted, #a0aec0);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm, 4px);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.nav-link:hover, .nav-link-btn:hover {
+  color: var(--color-green, #00E5A0);
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text, #ffffff);
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Backdrop Overlay for Mobile */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  /* backdrop-filter: blur(4px); <-- You can delete this line if you don't want the background blur at all */
+  z-index: 990; /* FIX: Lowered from 1050 to 990 so it stays under the navbar */
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease-in-out;
+}
+
+.nav-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Implementing the responsive mobile side-drawer... */
+@media (max-width: 868px) {
+  .navbar-container {
+    padding: 0 20px; /* Switch to smaller padding on mobile */
+  }
+
+  .nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Hide completely off-screen initially */
+    width: 260px; /* Clean, sleek side-drawer width */
+    height: 100vh;
+    background: #07111F;
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    flex-direction: column;
+    justify-content: flex-start; /* Align to top instead of center */
+    align-items: flex-start;
+    gap: 16px;
+    padding: 100px 30px 40px; /* Huge top padding to clear the logo/close button */
+    box-shadow: -10px 0 40px rgba(0,0,0,0.8);
+    transition: right 0.3s ease-in-out;
+    z-index: 1100;
+  }
+
+  .nav-menu--open {
+    right: 0;
+  }
+
+  /* Shrink the logo and text for mobile */
+  .nav-brand {
+    gap: 8px; 
+    height: auto;
+    width: auto;
+  }
+
+  .brand-logo-img {
+    height: 30px;
+  }
+
+  .nav-brand span {
+    font-size: 15px;
+  }
+
+  /* Make mobile links bigger and full-width */
+  .nav-link, .nav-link-btn {
+    font-size: 1.1rem;
+    padding: 12px 0;
+    width: 100%;
+    text-align: left;
+  }
+}

@@ -1,0 +1,97 @@
+.auth-page-root {
+  min-height: 100vh;
+  background-color: var(--color-light-bg);
+  padding-top: var(--nav-height);
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px var(--page-padding-x);
+}
+
+.auth-white-card {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 900px;
+  /* Ensure margin is auto to keep it dead center on extreme zooms */
+  margin: 0 auto; 
+  padding: clamp(30px, 5vw, 60px);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+}
+
+.auth-grid-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.auth-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-label {
+  color: #008F68;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* Precise form overrides for rendering light theme cards cleanly */
+.fidas-input.input-override {
+  background: #FFFFFF;
+  border: 1px solid #D1D9E6;
+  color: #1A2432;
+}
+
+.fidas-input.input-override::placeholder {
+  color: #A0AEC0;
+}
+
+.fidas-input.input-override.input-blue-tint {
+  background: #F4F7FC;
+}
+
+.fidas-input.input-override:focus {
+  border-color: var(--color-green);
+  background: #FFFFFF;
+}
+
+.auth-submission-block {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.auth-submit-btn {
+  width: 100%;
+  max-width: 360px;
+  padding: 16px;
+  border-radius: 30px;
+}
+
+.auth-switch-link {
+  font-size: 0.88rem;
+  color: #718096;
+}
+
+.auth-switch-link a {
+  color: var(--color-green);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .auth-grid-form { grid-template-columns: 1fr; gap: 20px; }
+  .auth-submission-block { grid-column: span 1; }
+}

@@ -1,0 +1,324 @@
+.home-layout {
+  padding-top: var(--nav-height);
+}
+
+/* Hero Section */
+.hero {
+  /* Change min-height to a safer value and add bottom padding */
+  min-height: clamp(500px, 85vh, 750px);
+  display: flex;
+  margin-right: 60px;
+  align-items: center;
+  padding: 80px var(--page-padding-x) 60px;
+}
+
+.hero-grid {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-content{
+  margin-left: 60px;
+}
+
+.hero-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-green-dim);
+  border: 1px solid rgba(0, 229, 160, 0.2);
+  color: var(--color-green);
+  padding: 4px 12px; 
+  border-radius: 999px;
+  font-size: 0.75rem; 
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.live-dot {
+  width: 8px; height: 8px; background: var(--color-green);
+  border-radius: 50%; box-shadow: 0 0 10px var(--color-green);
+}
+
+.hero-title {
+  font-size: clamp(2.2rem, 4vw, 3.8rem); 
+  font-weight: 700; 
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.text-accent { color: var(--color-green); }
+
+.hero-description {
+  color: var(--color-muted);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  max-width: 540px;
+  margin-bottom: 36px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 50px;
+}
+
+
+/* ==================================================
+   Hero Right Side Visual Animations & Layout
+   ================================================== */
+.hero-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 440px;
+  width: 100%;
+  /* Add this maximum width to lock the animations in place */
+  max-width: 500px; 
+  margin: 0 auto;
+}
+
+/* Floating Cards Base */
+.float-card {
+  position: absolute;
+  background: rgba(13, 31, 51, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+  padding: 14px 18px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 10;
+  min-width: 240px;
+}
+
+/* Float Animations */
+.float-card--top { 
+  top: 0; 
+  right: 0; 
+  animation: floatUp 3.5s ease-in-out infinite; 
+}
+.float-card--bottom { 
+  bottom: 10px; 
+  right: 20px; 
+  animation: floatDown 4s ease-in-out infinite; 
+}
+
+@keyframes floatUp { 
+  0%, 100% { transform: translateY(0); } 
+  50% { transform: translateY(-10px); } 
+}
+@keyframes floatDown { 
+  0%, 100% { transform: translateY(0); } 
+  50% { transform: translateY(10px); } 
+}
+
+/* Card Internal Styling */
+.float-card-icon { font-size: 1.4rem; }
+.float-card-title { font-size: 0.9rem; font-weight: 700; color: var(--color-text); }
+.float-card-sub { font-size: 0.75rem; color: var(--color-muted); }
+
+.float-card-badge--green { 
+  color: #07111F; 
+  background: var(--color-green); 
+  width: 20px; height: 20px; 
+  border-radius: 50%; 
+  display: flex; align-items: center; justify-content: center; 
+  font-size: 0.75rem; font-weight: bold; 
+}
+
+/* Progress Bar */
+.progress-bar-wrap { margin-top: 6px; }
+.progress-bar-track { 
+  width: 100%; height: 6px; 
+  background: rgba(255, 255, 255, 0.1); 
+  border-radius: 10px; overflow: hidden; margin-bottom: 4px; 
+}
+.progress-bar-fill { height: 100%; background: var(--color-green); border-radius: 10px; }
+.progress-label { font-size: 0.75rem; color: var(--color-muted); }
+
+/* Spinning Avatar Scene */
+.avatar-scene { 
+  position: relative; width: 260px; height: 260px; 
+  display: flex; align-items: center; justify-content: center; 
+}
+
+.avatar-ring { 
+  position: absolute; border-radius: 50%; 
+  border: 1px dashed rgba(0, 229, 160, 0.25); 
+  animation: spin 20s linear infinite; 
+}
+
+.avatar-ring--outer { width: 100%; height: 100%; animation-duration: 25s; }
+.avatar-ring--inner { width: 70%; height: 70%; animation-duration: 15s; animation-direction: reverse; }
+
+@keyframes spin { 
+  from { transform: rotate(0deg); } 
+  to { transform: rotate(360deg); } 
+}
+
+.avatar-core { position: relative; z-index: 5; }
+.avatar-badge { 
+  position: absolute; bottom: 0; right: 0; 
+  background: #07111F; border-radius: 50%; padding: 4px; 
+}
+
+/* ==================================================
+   Modular Sections General Layouts
+   ================================================== */
+.about-section, .how-section, .contact-section {
+  padding: 80px var(--page-padding-x);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.about-split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+}
+
+.about-text-content h2 { font-size: 2.5rem; margin-bottom: 20px; }
+.about-text-content .lead { margin-bottom: 16px; color: var(--color-text); }
+.about-text-content p { color: var(--color-muted); }
+
+.about-cards-stack { display: flex; flex-direction: column; gap: 20px; }
+.pillar-card { background: var(--color-surface); border: 1px solid var(--color-border); padding: 24px; border-radius: var(--radius-lg); }
+.pillar-card h4 { margin: 8px 0; }
+.pillar-card p { font-size: 0.9rem; color: var(--color-muted); }
+
+/* Fully Dynamic Cards Container Layouts */
+.center-headline { text-align: center; margin-bottom: 50px; font-size: 2.5rem; }
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.process-card {
+  background: rgba(13, 31, 51, 0.6);
+  border: 1px solid rgba(0, 229, 160, 0.15);
+  padding: 32px 24px; border-radius: var(--radius-lg);
+  transition: var(--transition);
+}
+
+.process-card:hover { border-color: var(--color-green); transform: translateY(-4px); }
+.process-step-num { font-family: var(--font-heading); color: var(--color-green); font-weight: 800; font-size: 0.85rem; }
+.process-card h3 { margin: 12px 0 8px; font-size: 1.15rem; }
+.process-card p { font-size: 0.88rem; color: var(--color-muted); }
+
+/* Contact Specific Layouts */
+.contact-card-wrapper {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  padding: 50px; border-radius: var(--radius-xl); max-width: 800px; margin: 0 auto;
+}
+.contact-card-wrapper h2 { margin-bottom: 30px; }
+.contact-form-layout { display: flex; flex-direction: column; gap: 20px; }
+.input-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.form-success-state {
+  background: var(--color-green-dim); border: 1px solid var(--color-green);
+  color: var(--color-green); padding: 20px; text-align: center; border-radius: var(--radius-md); font-weight: 700;
+}
+
+/* ==================================================
+   Mobile Screen Breakpoints & Alignment Rules
+   ================================================== */
+@media (max-width: 992px) {
+  /* Use flexbox column-reverse to put the IMAGE ON TOP of the text! */
+  .hero-grid { 
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center; 
+    gap: 30px; 
+  }
+  
+  /* Bring the visual back */
+  .hero-right { 
+    display: flex !important; 
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+  } 
+
+  .about-split { grid-template-columns: 1fr; gap: 40px; }
+  .input-row-grid { grid-template-columns: 1fr; }
+  
+  /* Force the Hero content to center */
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .hero-actions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Force About Us to center */
+  .about-text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  /* Ensure Process/How it Works aligns perfectly with the rest */
+  .center-headline, .section-tag {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: max-content;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Fix hero text cutoffs */
+  .hero {
+    padding: 40px 20px 60px;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  /* Force buttons to stack on very small screens */
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions button {
+    width: 100%;
+  }
+
+  /* SCALED UP AND POSITIONED ON TOP */
+  .hero-right {
+    display: flex !important;
+    transform: scale(0.85); /* Increased from 0.70 to make it larger */
+    transform-origin: center center;
+    min-height: 420px; /* Gave it a bit more room to accommodate the larger size */
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  /* Fix section cutoffs */
+  .about-section, .how-section, .contact-section {
+    padding: 60px 20px;
+  }
+}
+

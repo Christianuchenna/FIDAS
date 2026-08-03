@@ -1,0 +1,19 @@
+/* Custom sizing structural variances mirroring the registration profile */
+.login-card-modifier {
+  max-width: 480px;
+}
+
+.single-column-override {
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.single-column-override .auth-submission-block {
+  grid-column: span 1;
+}
+
+@media (max-width: 768px) {
+  .auth-switch-link{
+    font-size: 12px;
+  }
+}
