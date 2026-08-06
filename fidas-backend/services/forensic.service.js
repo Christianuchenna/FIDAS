@@ -12,7 +12,7 @@ const analyseDocument = async ({ filePath, matricNo, docType }) => {
     const response = await axios.post(
       `${PYTHON_URL}/analyse`,
       {
-        file_path: path.resolve(filePath),
+        file_path: filePath,
         matric_no: matricNo,
         doc_type: docType,
       },

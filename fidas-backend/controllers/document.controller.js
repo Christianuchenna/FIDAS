@@ -25,26 +25,28 @@ const uploadDocument = async (req, res) => {
 
     const studentId = req.student._id;
 
-    // Upsert: replace existing doc of same type if it exists
-    let doc = await Document.findOneAndUpdate(
-      { student_id: studentId, doc_type },
-      {
-        file_path: req.file.path,
-        original_filename: req.file.originalname,
-        file_size: req.file.size,
-        mime_type: req.file.mimetype,
-        status: 'processing',
-        forensic_report: null,
-        xai_message: null,
-        upload_time: new Date(),
-        verified_at: null,
-      },
-      { upsert: true, new: true }
-    );
+// Cloudinary gives us req.file.path as the full public URL
+const fileUrl = req.file.path;
 
-    // Trigger Python forensic microservice asynchronously
-    // (don't await — respond immediately, let frontend poll for status)
-    runForensicAnalysis(doc._id, req.file.path, req.student.matric_no, doc_type);
+// Upsert: replace existing doc of same type if it exists
+let doc = await Document.findOneAndUpdate(
+  { student_id: studentId, doc_type },
+  {
+    file_path: fileUrl,
+    original_filename: req.file.originalname,
+    file_size: req.file.size,
+    mime_type: req.file.mimetype,
+    status: 'processing',
+    forensic_report: null,
+    xai_message: null,
+    upload_time: new Date(),
+    verified_at: null,
+  },
+  { upsert: true, new: true }
+);
+
+// Trigger Python forensic microservice asynchronously
+runForensicAnalysis(doc._id, fileUrl, req.student.matric_no, doc_type);
 
     return res.status(202).json({
       success: true,

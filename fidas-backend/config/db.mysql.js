@@ -13,6 +13,7 @@ const connectMySQL = async () => {
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
+      ssl: process.env.MYSQL_SSL === 'true' ? { rejectUnauthorized: true } : undefined,
     });
 
     // Test the connection
