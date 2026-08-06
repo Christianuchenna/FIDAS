@@ -332,6 +332,7 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
     }
 
     try:
+        ssl_enabled = os.getenv("MYSQL_SSL", "false").lower() == "true"
         conn = mysql.connector.connect(
             host=os.getenv("MYSQL_HOST", "localhost"),
             port=int(os.getenv("MYSQL_PORT", 3306)),
@@ -339,6 +340,7 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
             password=os.getenv("MYSQL_PASSWORD", ""),
             database=os.getenv("MYSQL_DATABASE", "fidas_payments"),
             connection_timeout=5,
+            ssl_disabled=not ssl_enabled,
         )
         cursor = conn.cursor(dictionary=True)
 
