@@ -124,7 +124,7 @@ def analyse():
 
 # ── Run ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    port = int(os.getenv("FLASK_PORT", 8000))
+    port = int(os.getenv("PORT", os.getenv("FLASK_PORT", 8000)))
     debug = os.getenv("FLASK_ENV", "development") == "development"
     print(f"\n🔬 FiDAS Forensic Microservice running on port {port}")
     print(f"   Health: http://localhost:{port}/health")
