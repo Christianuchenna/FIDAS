@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import logo from "../../assets/FIDAS logo.png";
 import "./DashboardNavbar.css";
 
 export default function DashboardNavbar({ navigate, student, setActiveTab, onLogout }) {
@@ -24,12 +25,7 @@ export default function DashboardNavbar({ navigate, student, setActiveTab, onLog
   return (
     <nav className="dashboard-nav">
       <div className="nav-brand" onClick={() => setActiveTab("upload")}>
-        <div className="logo-icon-box">
-          <svg width="20" height="20" viewBox="0 0 22 22" fill="none">
-            <path d="M11 1L3 5V11C3 15.97 6.58 20.56 11 22C15.42 20.56 19 15.97 19 11V5L11 1Z" fill="#00E5A0"/>
-            <path d="M7 11L9.5 13.5L15 8" stroke="#07111F" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
+        <img src={logo} alt="FiDAS Logo" className="brand-logo-img" style={{ width: '28px', height: '28px' }} />
         <span className="logo-text">FiDAS</span>
       </div>
 

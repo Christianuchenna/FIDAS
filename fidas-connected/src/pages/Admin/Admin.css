@@ -1,0 +1,91 @@
+/* ============================================================
+   FiDAS Admin Page — Responsive Table
+   ============================================================ */
+
+   .admin-table-wrapper {
+    background: #0d1b2a;
+    border: 1px solid #1a2e40;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .admin-table-header {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1.5fr 2fr 1.8fr 1fr;
+    gap: 12px;
+    padding: 14px 20px;
+    background: #071527;
+    border-bottom: 1px solid #1a2e40;
+  }
+  
+  .admin-table-header span {
+    color: #718096;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .admin-table-row {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1.5fr 2fr 1.8fr 1fr;
+    gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #0f2030;
+    align-items: center;
+  }
+  
+  .admin-table-row.row-even { background: transparent; }
+  .admin-table-row.row-odd { background: #091520; }
+  
+  .col-sn { color: #718096; font-size: 0.85rem; font-family: monospace; }
+  .col-name { color: #fff; font-weight: 600; font-size: 0.9rem; word-break: break-word; }
+  .col-reg { color: #00E5A0; font-size: 0.85rem; font-family: monospace; word-break: break-word; }
+  .col-dept { color: #a0aec0; font-size: 0.85rem; word-break: break-word; }
+  .col-cleared { color: #a0aec0; font-size: 0.82rem; }
+  
+  .col-email-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-align: center;
+    display: inline-block;
+  }
+  .col-email-badge.sent { background: #064e2e; color: #00E5A0; }
+  .col-email-badge.pending { background: #4a1414; color: #ff6b6b; }
+  
+  /* ── Mobile: stack into cards ─────────────────────────────── */
+  @media (max-width: 720px) {
+    .admin-table-header { display: none; }
+  
+    .admin-table-row {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 16px;
+    }
+  
+    .admin-table-row > span,
+    .admin-table-row > div {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+  
+    .admin-table-row > span::before,
+    .admin-table-row > div::before {
+      content: attr(data-label);
+      color: #4a5568;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      flex-shrink: 0;
+    }
+  
+    .col-name { font-size: 1rem; }
+  }

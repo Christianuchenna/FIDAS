@@ -295,11 +295,11 @@ function ProfileTab({ student, enrichedStudent, updateStudent }) {
             <label style={{ fontSize: '0.85rem', color: '#a0aec0' }}>Email Address</label>
             <input name="email" type="email" value={form.email} onChange={handleChange} />
 
-            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <button type="submit" className="btn-finalize ready" style={{ padding: '10px 24px' }} disabled={saving}>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px', flexWrap: 'wrap' }}>
+              <button type="submit" className="btn-finalize ready" style={{ padding: '10px 24px', flex: '1 1 auto', minWidth: '140px' }} disabled={saving}>
                 {saving ? 'Saving...' : '💾 Save Changes'}
               </button>
-              <button type="button" className="btn-finalize" style={{ padding: '10px 24px' }} onClick={() => setEditing(false)}>
+              <button type="button" className="btn-finalize" style={{ padding: '10px 24px', flex: '1 1 auto', minWidth: '100px' }} onClick={() => setEditing(false)}>
                 Cancel
               </button>
             </div>

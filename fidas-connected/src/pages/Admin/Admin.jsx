@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../../api';
+import logo from '../../assets/FIDAS logo.png';
 import '../../pages/Register/Register.css';
+import './Admin.css';
 
 const ADMIN_TOKEN_KEY = 'fidas_admin_token';
 
@@ -71,8 +73,8 @@ export default function Admin() {
     return (
       <div style={{ minHeight: '100vh', background: '#07111F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ background: '#fff', borderRadius: '12px', padding: '40px', width: '100%', maxWidth: '420px', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}>
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>🛡️</div>
+        <div style={{ textAlign: 'center', marginBottom: '28px' }}>
+            <img src={logo} alt="FiDAS Logo" style={{ width: '56px', height: '56px', marginBottom: '8px' }} />
             <h2 style={{ color: '#07111F', margin: 0 }}>FiDAS Admin</h2>
             <p style={{ color: '#718096', fontSize: '0.9rem', marginTop: '6px' }}>Restricted access — authorised personnel only</p>
           </div>
@@ -117,9 +119,9 @@ export default function Admin() {
       {/* Admin Navbar */}
       <nav style={{ background: '#0d1b2a', borderBottom: '1px solid #1a2e40', padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '1.5rem' }}>🛡️</span>
-          <span style={{ color: '#00E5A0', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '1px' }}>FiDAS ADMIN</span>
-        </div>
+            <img src={logo} alt="FiDAS Logo" style={{ width: '24px', height: '24px' }} />
+            <span style={{ color: '#00E5A0', fontWeight: 700, fontSize: '1.1rem', letterSpacing: '1px' }}>FiDAS ADMIN</span>
+          </div>
         <button
           onClick={handleLogout}
           style={{ background: 'transparent', border: '1px solid #ff6b6b', color: '#ff6b6b', padding: '8px 20px', borderRadius: '6px', cursor: 'pointer', fontWeight: 600 }}
@@ -168,26 +170,20 @@ export default function Admin() {
             {search ? 'No students match your search.' : 'No students have been cleared yet.'}
           </p>
         ) : (
-          <div style={{ background: '#0d1b2a', border: '1px solid #1a2e40', borderRadius: '10px', overflow: 'hidden' }}>
-            {/* Table header */}
-            <div style={{ display: 'grid', gridTemplateColumns: '0.5fr 2fr 1.5fr 2fr 1.8fr 1fr', gap: '12px', padding: '14px 20px', background: '#071527', borderBottom: '1px solid #1a2e40' }}>
+          <div className="admin-table-wrapper">
+            <div className="admin-table-header">
               {['S/N', 'Full Name', 'Reg. Number', 'Department', 'Cleared On', 'Email'].map(h => (
-                <span key={h} style={{ color: '#718096', fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{h}</span>
+                <span key={h}>{h}</span>
               ))}
             </div>
 
-{filtered.map((s, i) => (
-              <div key={s.clearance_id} style={{
-                display: 'grid', gridTemplateColumns: '0.5fr 2fr 1.5fr 2fr 1.8fr 1fr',
-                gap: '12px', padding: '16px 20px', borderBottom: '1px solid #0f2030',
-                background: i % 2 === 0 ? 'transparent' : '#091520',
-                alignItems: 'center',
-              }}>
-                <span style={{ color: '#718096', fontSize: '0.85rem', fontFamily: 'monospace' }}>{i + 1}</span>
-                <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>{s.full_name}</span>
-                <span style={{ color: '#00E5A0', fontSize: '0.85rem', fontFamily: 'monospace' }}>{s.matric_no}</span>
-                <span style={{ color: '#a0aec0', fontSize: '0.85rem' }}>{s.department}</span>
-                <span style={{ color: '#a0aec0', fontSize: '0.82rem' }}>
+            {filtered.map((s, i) => (
+              <div key={s.clearance_id} className={`admin-table-row ${i % 2 === 0 ? 'row-even' : 'row-odd'}`}>
+                <span className="col-sn" data-label="S/N">{i + 1}</span>
+                <span className="col-name" data-label="Full Name">{s.full_name}</span>
+                <span className="col-reg" data-label="Reg. Number">{s.matric_no}</span>
+                <span className="col-dept" data-label="Department">{s.department}</span>
+                <span className="col-cleared" data-label="Cleared On">
                   {s.cleared_at
                     ? new Date(s.cleared_at).toLocaleString('en-GB', {
                         day: '2-digit', month: 'short', year: 'numeric',
@@ -195,13 +191,10 @@ export default function Admin() {
                       })
                     : 'N/A'}
                 </span>
-                <span style={{
-                  fontSize: '0.75rem', fontWeight: 700, padding: '3px 8px', borderRadius: '12px',
-                  background: s.email_sent ? '#064e2e' : '#4a1414',
-                  color: s.email_sent ? '#00E5A0' : '#ff6b6b',
-                  textAlign: 'center',
-                }}>
-                  {s.email_sent ? 'Sent ✓' : 'Pending'}
+                <span data-label="Email">
+                  <span className={`col-email-badge ${s.email_sent ? 'sent' : 'pending'}`}>
+                    {s.email_sent ? 'Sent ✓' : 'Pending'}
+                  </span>
                 </span>
               </div>
             ))}
