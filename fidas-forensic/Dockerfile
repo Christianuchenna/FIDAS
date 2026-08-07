@@ -1,5 +1,9 @@
 FROM python:3.12-slim
 
+# Disable Python output buffering so print() statements appear
+# immediately in Render's logs instead of being silently held back
+ENV PYTHONUNBUFFERED=1
+
 # Install system dependencies: ExifTool, Tesseract OCR, Poppler (for PDF conversion)
 RUN apt-get update && apt-get install -y \
     libimage-exiftool-perl \
