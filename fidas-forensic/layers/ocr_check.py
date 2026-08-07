@@ -258,16 +258,16 @@ def run_ocr(file_path: str, matric_no: str, doc_type: str) -> dict:
     if processed is None:
         result["ocr_error"] = "IMAGE_PREPROCESSING_FAILED"
         return result
-
-    # ── Step 2: OCR ───────────────────────────────────────────────────────────
+# ── Step 2: OCR ───────────────────────────────────────────────────────────
     try:
         config = "--oem 3 --psm 6"   # LSTM engine, assume uniform block of text
         raw_text = pytesseract.image_to_string(processed, config=config)
         result["ocr_raw_text"] = raw_text
+        print("OCR SUCCESS, text length:", len(raw_text))
     except Exception as e:
+        print("TESSERACT ERROR:", repr(e))
         result["ocr_error"] = f"TESSERACT_ERROR: {str(e)}"
         return result
-
 # ── Step 3: Extract semantic fields ───────────────────────────────────────
     result["ocr_amount"] = _extract_amount(raw_text)
     result["ocr_date"]   = _extract_date(raw_text)

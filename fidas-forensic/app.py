@@ -50,6 +50,19 @@ def health():
     return jsonify({"status": "ok", "service": "FiDAS Forensic Microservice"}), 200
 
 
+@app.route("/debug", methods=["GET"])
+def debug():
+    import subprocess
+    results = {}
+    for cmd in [["tesseract", "--version"], ["exiftool", "-ver"], ["pdftoppm", "-v"]]:
+        try:
+            out = subprocess.run(cmd, capture_output=True, text=True, timeout=5)
+            results[cmd[0]] = (out.stdout + out.stderr).strip()[:200]
+        except Exception as e:
+            results[cmd[0]] = f"ERROR: {str(e)}"
+    return jsonify(results), 200
+
+
 # ── Main forensic endpoint ────────────────────────────────────────────────────
 @app.route("/analyse", methods=["POST"])
 def analyse():
