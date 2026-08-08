@@ -108,7 +108,7 @@ def _preprocess_image(file_path: str) -> np.ndarray | None:
         pil = pil.convert("L")
 
         # ── Pass 1: fast low-res scan to find best rotation+method ─────────────
-        scale = 600 / pil.width if pil.width > 600 else 1.0
+        scale = 350 / pil.width if pil.width > 350 else 1.0
         small = pil.resize((int(pil.width * scale), int(pil.height * scale))) if scale < 1.0 else pil
 
         best_angle = 0
