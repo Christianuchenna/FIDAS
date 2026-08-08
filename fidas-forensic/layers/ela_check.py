@@ -139,14 +139,14 @@ def _pdf_to_image(pdf_path: str) -> str | None:
         import subprocess
         out_path = pdf_path.replace(".pdf", "_page1.jpg")
         subprocess.run(
-            ["pdftoppm", "-jpeg", "-f", "1", "-l", "1", "-r", "150", pdf_path,
+            ["pdftoppm", "-jpeg", "-f", "1", "-l", "1", "-r", "100", pdf_path,
              out_path.replace("_page1.jpg", "")],
             check=True, capture_output=True
         )
-        # pdftoppm appends -1 to the filename
         candidate = out_path.replace("_page1.jpg", "-1.jpg")
         return candidate if os.path.exists(candidate) else None
-    except Exception:
+    except Exception as e:
+        print("ELA PDF CONVERSION ERROR:", repr(e))
         return None
 
 
