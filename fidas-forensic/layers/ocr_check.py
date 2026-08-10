@@ -333,6 +333,7 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
 
     try:
         ssl_enabled = os.getenv("MYSQL_SSL", "false").lower() == "true"
+        print("Attempting MySQL connection to:", os.getenv("MYSQL_HOST", "localhost"))
         conn = mysql.connector.connect(
             host=os.getenv("MYSQL_HOST", "localhost"),
             port=int(os.getenv("MYSQL_PORT", 3306)),
@@ -342,6 +343,7 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
             connection_timeout=5,
             ssl_disabled=not ssl_enabled,
         )
+        print("MySQL connection established")
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
@@ -351,6 +353,7 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
         row = cursor.fetchone()
         cursor.close()
         conn.close()
+        print("MySQL query completed successfully")
 
         if not row:
             # RRR not found at all
@@ -377,14 +380,15 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
             # Could not extract or compare amount — treat as mismatch
             db_result["db_value_match"] = False
 
-    except MySQLError:
-        # DB unavailable — return None (system treats as inconclusive, not a fail)
+    except MySQLError as e:
+        print("MYSQL ERROR:", repr(e))
         return {
             "db_existence": None,
             "db_ownership": None,
             "db_value_match": None,
         }
-    except Exception:
+    except Exception as e:
+        print("MYSQL UNEXPECTED ERROR:", repr(e))
         return {
             "db_existence": None,
             "db_ownership": None,
