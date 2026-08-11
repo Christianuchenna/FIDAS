@@ -20,6 +20,29 @@ from PIL import Image
 
 import mysql.connector
 from mysql.connector import Error as MySQLError
+from mysql.connector import pooling
+
+# ── Connection pool ─────────────────────────────────────────────────────────
+# Reused across requests to avoid the SSL handshake cost of opening a
+# fresh connection to Aiven every single time.
+_pool = None
+
+def _get_pool():
+    global _pool
+    if _pool is None:
+        ssl_enabled = os.getenv("MYSQL_SSL", "false").lower() == "true"
+        _pool = pooling.MySQLConnectionPool(
+            pool_name="fidas_pool",
+            pool_size=3,
+            host=os.getenv("MYSQL_HOST", "localhost"),
+            port=int(os.getenv("MYSQL_PORT", 3306)),
+            user=os.getenv("MYSQL_USER", "root"),
+            password=os.getenv("MYSQL_PASSWORD", ""),
+            database=os.getenv("MYSQL_DATABASE", "fidas_payments"),
+            connection_timeout=10,
+            ssl_disabled=not ssl_enabled,
+        )
+    return _pool
 
 
 # ── Tesseract path override (set in .env if not in system PATH) ───────────────
@@ -332,18 +355,9 @@ def _validate_against_db(rrr_number: str, matric_no: str, extracted_amount: str 
     }
 
     try:
-        ssl_enabled = os.getenv("MYSQL_SSL", "false").lower() == "true"
-        print("Attempting MySQL connection to:", os.getenv("MYSQL_HOST", "localhost"))
-        conn = mysql.connector.connect(
-            host=os.getenv("MYSQL_HOST", "localhost"),
-            port=int(os.getenv("MYSQL_PORT", 3306)),
-            user=os.getenv("MYSQL_USER", "root"),
-            password=os.getenv("MYSQL_PASSWORD", ""),
-            database=os.getenv("MYSQL_DATABASE", "fidas_payments"),
-            connection_timeout=5,
-            ssl_disabled=not ssl_enabled,
-        )
-        print("MySQL connection established")
+        print("Getting MySQL connection from pool...")
+        conn = _get_pool().get_connection()
+        print("MySQL connection acquired from pool")
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute(
