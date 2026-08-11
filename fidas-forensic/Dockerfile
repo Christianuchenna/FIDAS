@@ -20,4 +20,4 @@ COPY . .
 
 EXPOSE 10000
 
-CMD gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 1 app:app
+CMD gunicorn --bind 0.0.0.0:$PORT --timeout 120 --workers 1 --access-logfile - --error-logfile - app:app

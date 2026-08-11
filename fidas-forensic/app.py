@@ -120,6 +120,7 @@ def analyse():
             matric_no=matric_no,
             doc_type=doc_type,
         )
+        print("PIPELINE COMPLETE — preparing response")
         return jsonify(report), 200
 
     except Exception as e:
@@ -127,12 +128,14 @@ def analyse():
         return jsonify({"error": "Internal forensic pipeline error.", "detail": str(e)}), 500
 
     finally:
-        # Clean up the downloaded temp file
+        print("ENTERING cleanup step")
         if downloaded_temp_path and os.path.exists(downloaded_temp_path):
             try:
                 os.remove(downloaded_temp_path)
-            except Exception:
-                pass
+                print("Temp file cleanup successful")
+            except Exception as e:
+                print("Temp file cleanup FAILED:", repr(e))
+        print("CLEANUP DONE")
 
 
 # ── Run ───────────────────────────────────────────────────────────────────────
