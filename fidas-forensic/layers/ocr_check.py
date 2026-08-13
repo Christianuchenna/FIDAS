@@ -130,9 +130,19 @@ def _preprocess_image(file_path: str) -> np.ndarray | None:
         pil = ImageOps.exif_transpose(pil)
         pil = pil.convert("L")
 
+        # Cap maximum dimension to prevent memory exhaustion on Render's
+        # free tier (512MB limit) — large phone photos can otherwise
+        # balloon memory usage across 8 processing passes.
+        MAX_DIMENSION = 1600
+        if max(pil.width, pil.height) > MAX_DIMENSION:
+            ratio = MAX_DIMENSION / max(pil.width, pil.height)
+            pil = pil.resize((int(pil.width * ratio), int(pil.height * ratio)))
+
         # ── Pass 1: fast low-res scan to find best rotation+method ─────────────
         scale = 350 / pil.width if pil.width > 350 else 1.0
         small = pil.resize((int(pil.width * scale), int(pil.height * scale))) if scale < 1.0 else pil
+
+        import gc
 
         best_angle = 0
         best_method = "raw"
@@ -161,6 +171,9 @@ def _preprocess_image(file_path: str) -> np.ndarray | None:
                     best_score = score
                     best_angle = angle
                     best_method = method_name
+
+            del rotated, gray_arr, blurred, thresh_arr
+            gc.collect()
 
         # ── Pass 2: apply winning combination at FULL resolution ───────────────
         full_rotated = pil.rotate(-best_angle, expand=True)
