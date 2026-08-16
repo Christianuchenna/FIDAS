@@ -148,31 +148,27 @@ def _preprocess_image(file_path: str) -> np.ndarray | None:
         best_method = "raw"
         best_score = -1
 
-        for angle in [0, 90, 180, 270]:
+        # Reduced to 2 passes (0° and 180° only) for Render free-tier CPU
+        # constraints. Trade-off: sideways (90°/270°) photos will no longer
+        # auto-correct — students would need to retake/rotate those manually.
+        for angle in [0, 180]:
             rotated = small.rotate(-angle, expand=True)
             gray_arr = np.array(rotated)
 
-            blurred = cv2.GaussianBlur(gray_arr, (5, 5), 0)
-            thresh_arr = cv2.adaptiveThreshold(
-                blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                cv2.THRESH_BINARY, 31, 15
-            )
+            try:
+                sample_text = pytesseract.image_to_string(gray_arr, config="--oem 3 --psm 6")
+            except Exception:
+                sample_text = ""
 
-            for method_name, candidate in [("raw", gray_arr), ("thresh", thresh_arr)]:
-                try:
-                    sample_text = pytesseract.image_to_string(candidate, config="--oem 3 --psm 6")
-                except Exception:
-                    sample_text = ""
+            text_lower = sample_text.lower()
+            score = sum(1 for w in ANCHOR_WORDS if w in text_lower)
 
-                text_lower = sample_text.lower()
-                score = sum(1 for w in ANCHOR_WORDS if w in text_lower)
+            if score > best_score:
+                best_score = score
+                best_angle = angle
+                best_method = "raw"
 
-                if score > best_score:
-                    best_score = score
-                    best_angle = angle
-                    best_method = method_name
-
-            del rotated, gray_arr, blurred, thresh_arr
+            del rotated, gray_arr
             gc.collect()
 
         # ── Pass 2: apply winning combination at FULL resolution ───────────────
